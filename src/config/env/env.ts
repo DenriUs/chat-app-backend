@@ -1,7 +1,7 @@
 import { ZodError } from 'zod';
 import { config } from 'dotenv';
 
-import { logger, NodeEnvEnum } from 'src/core';
+import { logger, NodeEnvEnum, ProcessExitCodeEnum } from 'src/core';
 
 import { envSchema } from './env.schemas';
 import { EnvSchemaType } from './env.types';
@@ -21,7 +21,7 @@ const parsedEnv = envSchema.safeParse(process.env);
 if (parsedEnv.error) {
   const errorMessage = getParseErrorMessage(parsedEnv.error);
   logger.error(errorMessage);
-  process.exit(1);
+  process.exit(ProcessExitCodeEnum.FAILURE);
 }
 
 export const env = parsedEnv.data;
