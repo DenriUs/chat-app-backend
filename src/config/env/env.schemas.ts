@@ -14,4 +14,5 @@ export const envSchema = zod.object({
     .pipe(zod.array(zod.string())),
   RATE_LIMIT_WINDOW_MS: zod.string().transform(Number).refine(checkForNaN, nanErrorMessage),
   RATE_LIMIT_MAX: zod.string().transform(Number).refine(checkForNaN, nanErrorMessage),
+  MONGO_DB_URL: zod.url(),
 });
