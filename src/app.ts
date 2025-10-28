@@ -6,6 +6,9 @@ import rateLimit from 'express-rate-limit';
 
 import { httpLogger } from 'src/core';
 import { env } from 'src/config';
+import { notFoundErrorHandler, globalErrorHandler } from 'src/middleware';
+
+import { mainRouter } from './main.routes';
 
 const app = express();
 
@@ -19,5 +22,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(httpLogger);
+
+app.use('/api', mainRouter);
+
+app.use(notFoundErrorHandler);
+app.use(globalErrorHandler);
 
 export default app;

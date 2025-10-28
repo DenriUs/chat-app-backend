@@ -1,18 +1,24 @@
 import { createServer } from 'http';
-import { createHttpTerminator } from 'http-terminator';
+import mongoose from 'mongoose';
 
-import { logger, ProcessSignalEnum, shutdownServer } from 'src/core';
+import { logger, ProcessExitCodeEnum, setupGracefulServerShutdown } from 'src/core';
 import { env } from 'src/config';
+import { connectDb } from 'src/database';
 
 import app from './app';
 
 const { PORT } = env;
 
-const server = createServer(app);
+const bootstrap = async () => {
+  await connectDb().catch((error) => {
+    logger.error(error, "Couldn't connect to the database: ");
+    process.exit(ProcessExitCodeEnum.FAILURE);
+  });
 
-const httpTerminator = createHttpTerminator({ server });
+  const server = createServer(app);
 
-server.listen(PORT, () => logger.info('Express application successfully started'));
+  server.listen(PORT, () => logger.info('Express application successfully started'));
 
-process.on('SIGTERM', () => shutdownServer(httpTerminator));
-process.on('SIGINT', () => shutdownServer(httpTerminator, ProcessSignalEnum.SIGINT));
+  setupGracefulServerShutdown(server, [() => mongoose.connection.close()]);
+};
+bootstrap();
