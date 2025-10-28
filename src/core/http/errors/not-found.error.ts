@@ -1,9 +1,17 @@
-import { HttpErrorMessageEnum, HttpErrorNameEnum, HttpStatusCodeEnum } from 'src/core';
+import {
+  HttpErrorTypeEnum,
+  HttpErrorMessageEnum,
+  HttpErrorNameEnum,
+  HttpResponseStatusCodeEnum,
+} from 'src/core';
 
 import { HttpError } from './http.error';
 
 export class NotFoundError extends HttpError {
-  constructor(message: string = HttpErrorMessageEnum.NOT_FOUND) {
-    super(HttpErrorNameEnum.NOT_FOUND, HttpStatusCodeEnum.NOT_FOUND, message);
+  constructor(
+    errorCode: HttpErrorTypeEnum = HttpErrorTypeEnum.NOT_FOUND,
+    message: string = HttpErrorMessageEnum.NOT_FOUND,
+  ) {
+    super(HttpErrorNameEnum.NOT_FOUND, HttpResponseStatusCodeEnum.NOT_FOUND, errorCode, message);
   }
 }
