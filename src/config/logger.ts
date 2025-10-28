@@ -3,7 +3,7 @@ const defaultConfig = {
     target: 'pino-pretty',
     options: {
       colorize: true,
-      translateTime: 'yyyy-mm-dd, HH:MM:ss',
+      translateTime: 'SYS:yyyy-mm-dd, HH:MM:ss',
       ignore: 'pid,hostname',
     },
   },
